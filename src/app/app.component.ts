@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { debounceTime } from 'rxjs';
+import { BehaviorSubject, debounceTime, switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-component',
@@ -12,6 +12,10 @@ export class AppComponent implements OnInit {
     private http = inject(HttpClient);
     public books = signal<any[]>([]);
     rootUrl = 'https://localhost:7275/books';
+    isEditing = signal(false);
+    isAdding = signal(false);
+    bookToEdit = signal<any>(null);
+    private refreshTrigger = new BehaviorSubject<void>(undefined);
 
     ngOnInit() {
         this.fetchbooks();
@@ -23,6 +27,10 @@ export class AppComponent implements OnInit {
                 next: (data) => this.books.set(data), // Save data to signal
                 error: (err) => console.error('API Error:', err)
             });
+    }
+
+    triggerRefresh() {
+        this.refreshTrigger.next();
     }
 
     searchBooks(query: string) {
@@ -45,7 +53,7 @@ export class AppComponent implements OnInit {
 
     addBook(bookName: string) {
         const postUrl = `${this.rootUrl}/AddBookToList?book=${encodeURIComponent(bookName)}`
-        this.http.post<any>(postUrl, null)
+        this.http.post<any>(postUrl, {})
             .pipe(debounceTime(300)) // Debounce to avoid rapid calls
             .subscribe({
                 next: (data) => {
@@ -56,6 +64,13 @@ export class AppComponent implements OnInit {
             })
     };
 
+    editBook(id: string) {
+        this.isEditing.set(!this.isEditing());
+        // Find the book to edit and set it in the signal
+        const book = this.books().find((b) => b.id === id);
+        this.bookToEdit.set(book);
+    }
+
     updateBook(searchString: string, bookName: string) {
         const putUrl = `${this.rootUrl}/UpdateBookTitle?newName=${encodeURIComponent(bookName)}`
         const book = { name: searchString }; // Create an object with the book name
@@ -64,6 +79,8 @@ export class AppComponent implements OnInit {
             .subscribe({
                 next: (data) => {
                     console.log('Book added:', data);
+                    this.isEditing.set(false);
+                    this.fetchbooks(); // Refresh the list after updating
                 },
                 error: (err) => console.error('API Error:', err)
             })

@@ -1,26 +1,31 @@
 <h1>Book List</h1>
 
+@if (!this.isAdding()) {
+    <button (click)="isAdding.set(true)">Add Book</button>
+}
+
+@if (this.isAdding()) {
+<input type="text" placeholder="Add book name..." #bookToAdd />
+<button (click)="addBook(bookToAdd.value);bookToAdd.value='';this.isAdding.set(false);this.fetchbooks()">Add Book</button>
+}
+
 <ul>
-  @for (book of books(); track book.id) {
-    <li>{{ book.id }} - {{ book.name }}</li>
-  } @empty {
+    @for (book of books(); track book.id) {
+    <li>{{ book.id }} - {{ book.name }}
+        <button (click)="editBook(book.id)">Edit</button>
+        <button (click)="deleteBook(book.id);this.isEditing.set(false);this.fetchbooks()">Delete</button>
+    </li>
+    } @empty {
     <p>Loading books...</p>
-  }
+    }
 </ul>
-<br/>
-<input type="text" placeholder="Search books..." #bookInput/>
-<button (click)="searchBooks(bookInput.value);bookInput.value=''">Search Within</button>
-<br/>
-<input type="text" placeholder="Search books..." #bookOtherInput/>
-<button (click)="searchExactBook(bookOtherInput.value);bookOtherInput.value=''">Search Exact</button>
-<p></p>
-<input type="text" placeholder="Add book name..." #bookToAdd/>
-<button (click)="addBook(bookToAdd.value);bookToAdd.value=''">Add Book</button>
-<p></p>
-<input type="text" placeholder="Update book name from..." #from/>
-<input type="text" placeholder="Update book name to..." #to/>
-<button (click)="updateBook(from.value, to.value);from.value='';to.value=''">Update Book</button>
-<p></p>
-<input type="text" placeholder="Delete book ID..." #bookId/>
-<button (click)="deleteBook(bookId.value);bookId.value=''">Delete Book</button>
-<p></p>
+<br />
+  @if (this.isEditing()) {
+        <input type="text" placeholder="New book name..." #newBookName value="{{this.bookToEdit().name}}" />
+        <button (click)="updateBook(this.bookToEdit().name, newBookName.value);newBookName.value=''">Update</button>
+        }
+@else {
+<input type="text" placeholder="Search books..." #bookInput />
+<button (click)="searchBooks(bookInput.value);bookInput.value=''">Search partial</button>
+<button (click)="searchExactBook(bookInput.value);bookInput.value=''">Search Exact</button>
+}
