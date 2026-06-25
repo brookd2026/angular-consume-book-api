@@ -7,3 +7,17 @@
     <p>Loading books...</p>
   }
 </ul>
+<br/>
+<input type="text" placeholder="Search books..." #bookInput/>
+<button (click)="searchBooks(bookInput.value);bookInput.value=''">Search Within</button>
+<br/>
+<input type="text" placeholder="Search books..." #bookOtherInput/>
+<button (click)="searchExactBook(bookOtherInput.value);bookOtherInput.value=''">Search Exact</button>
+<p></p>
+<input type="text" placeholder="Add book name..." #bookToAdd/>
+<button (click)="addBook(bookToAdd.value);bookToAdd.value=''">Add Book</button>
+<p></p>
+<input type="text" placeholder="Update book name from..." #from/>
+<input type="text" placeholder="Update book name to..." #to/>
+<button (click)="updateBook(from.value, to.value);from.value='';to.value=''">Update Book</button>
+<p></p>
