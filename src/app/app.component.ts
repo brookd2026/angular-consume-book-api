@@ -69,6 +69,17 @@ export class AppComponent implements OnInit {
             })
     }
 
+    deleteBook(id: string) {
+        const deleteUrl = `${this.rootUrl}/DeleteBookFromList?id=${encodeURIComponent(id)}`;
+        this.http.delete<any>(deleteUrl)
+            .subscribe({
+                next: (data) => {
+                    console.log('Book deleted:', data);
+                },
+                error: (err) => console.error('API Error:', err)
+            })
+    }
+
 }
 
 
