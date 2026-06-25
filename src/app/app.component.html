@@ -1,0 +1,9 @@
+<h1>Book List</h1>
+
+<ul>
+  @for (book of books(); track book.id) {
+    <li>{{ book.id }} - {{ book.name }}</li>
+  } @empty {
+    <p>Loading books...</p>
+  }
+</ul>
