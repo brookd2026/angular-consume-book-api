@@ -1,0 +1,43 @@
+ <div class="crud-container">
+      <h2>🚀 High-Performance Book Manager</h2>
+
+      <!-- FORM FOR CREATING / UPDATING -->
+      <form (submit)="saveBook()" class="Book-form">
+        <input [(ngModel)]="activeBook().name" name="name" placeholder="Book Name" required />
+        
+        <button type="submit" [disabled]="isSubmitting()">
+          {{ activeBook().id ? 'Update' : 'Create' }} Book
+        </button>
+        @if (activeBook().id) {
+          <button type="button" (click)="resetForm()">Cancel</button>
+        }
+      </form>
+
+      <!-- DATA STATE INDICATORS -->
+      @if (booksResource.isLoading()) { <p class="loading">Loading Books from API...</p> }
+      @if (booksResource.error()) { <p class="error">Error loading data!</p> }
+
+      <!-- BookS TABLE -->
+      @if (booksResource.value(); as Books) {
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (Book of Books; track Book.id) {
+              <tr>
+                <td>{{ Book.name }}</td>
+                <td>
+                  <button (click)="selectForEdit(Book)">Edit</button>
+                  <button (click)="deleteBook(Book.id!)" class="btn-delete" [disabled]="isSubmitting()">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4">No Books found.</td></tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>

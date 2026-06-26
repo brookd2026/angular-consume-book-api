@@ -1,11 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, debounceTime, switchMap } from 'rxjs';
+import { Book } from './models/book.model';
 
 @Component({
     selector: 'app-component',
     standalone: true,
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
     // Inject the client and create a reactive signal for the data
@@ -34,7 +36,7 @@ export class AppComponent implements OnInit {
     }
 
     searchBooks(query: string) {
-        const searchUrl = `${this.rootUrl}/FilterSearch?book=${encodeURIComponent(query)}`;
+        const searchUrl = `${this.rootUrl}/FilterSearch/${encodeURIComponent(query)}`;
         this.http.get<any[]>(searchUrl)
             .subscribe({
                 next: (data) => this.books.set(data), // Save data to signal
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
     }
 
     searchExactBook(query: string) {
-        const searchUrl = `${this.rootUrl}/ExactNameSearch?searchString=${encodeURIComponent(query)}`;
+        const searchUrl = `${this.rootUrl}/ExactNameSearch/${encodeURIComponent(query)}`;
         this.http.get<any[]>(searchUrl)
             .subscribe({
                 next: (data) => this.books.set(data), // Save data to signal
@@ -51,9 +53,10 @@ export class AppComponent implements OnInit {
             });
     }
 
-    addBook(bookName: string) {
-        const postUrl = `${this.rootUrl}/AddBookToList?book=${encodeURIComponent(bookName)}`
-        this.http.post<any>(postUrl, {})
+    addBook(name: string) {
+        const postUrl = `${this.rootUrl}/AddBookToList`
+        var book = { name: name };
+        this.http.post<any>(postUrl, book)
             .pipe(debounceTime(300)) // Debounce to avoid rapid calls
             .subscribe({
                 next: (data) => {
@@ -71,9 +74,9 @@ export class AppComponent implements OnInit {
         this.bookToEdit.set(book);
     }
 
-    updateBook(searchString: string, bookName: string) {
-        const putUrl = `${this.rootUrl}/UpdateBookTitle?newName=${encodeURIComponent(bookName)}`
-        const book = { name: searchString }; // Create an object with the book name
+    updateBook(id: number, name: string) {
+        const putUrl = `${this.rootUrl}/UpdateBookTitle/${id}`
+        var book = { id: id, name: name };
         this.http.put<any>(putUrl, book)
             .pipe(debounceTime(300)) // Debounce to avoid rapid calls
             .subscribe({
@@ -87,7 +90,7 @@ export class AppComponent implements OnInit {
     }
 
     deleteBook(id: string) {
-        const deleteUrl = `${this.rootUrl}/DeleteBookFromList?id=${encodeURIComponent(id)}`;
+        const deleteUrl = `${this.rootUrl}/DeleteBookFromList/${id}`;
         this.http.delete<any>(deleteUrl)
             .subscribe({
                 next: (data) => {

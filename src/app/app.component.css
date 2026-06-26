@@ -1,0 +1,84 @@
+.container {
+    margin: 0 auto;
+    width: 475px;
+    text-align: center;
+}
+
+.book-item {
+    margin-bottom: 5px;
+    margin-left: 35px;
+}
+
+.book {
+    float: left;
+    width: 185px;
+    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 10px;
+}
+
+.book-buttons {
+    border-radius: 7px !important;
+    border: 1px solid #ccc;
+}
+
+.books-search {
+    clear: both;
+}
+
+.button-edit {
+      padding:15px;
+      width: 50px;
+      margin-right: 5px;
+      background: #007bff;
+      border:none;
+      color: white;
+      border-radius: 7px;
+}
+
+.button-delete {
+    padding: 15px;
+    width: auto;
+    background: #dc3545;
+    border: none;
+    color: white;
+    border-radius: 7px;
+}
+
+.button-add {
+    padding: 10px;
+    border-radius: 7px;
+    width: auto;
+    background: #28a745;
+    border: none;
+    color: white;
+}
+
+.button-partial {
+    padding: 10px;
+    border-radius: 7px;
+    width: auto;
+    background: brown;
+    border: none;
+    color: white;
+    margin-right: 5px;
+}
+
+.book-search {
+    float: left;
+    text-align: left;
+    width: 165px;
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 35px;
+}
+
+.book-add {
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}

@@ -1,31 +1,43 @@
-<h1>Book List</h1>
+<div class="container">
 
-@if (!this.isAdding()) {
-    <button (click)="isAdding.set(true)">Add Book</button>
-}
+    <h1>Book List</h1>
 
-@if (this.isAdding()) {
-<input type="text" placeholder="Add book name..." #bookToAdd />
-<button (click)="addBook(bookToAdd.value);bookToAdd.value='';this.isAdding.set(false);this.fetchbooks()">Add Book</button>
-}
-
-<ul>
-    @for (book of books(); track book.id) {
-    <li>{{ book.id }} - {{ book.name }}
-        <button (click)="editBook(book.id)">Edit</button>
-        <button (click)="deleteBook(book.id);this.isEditing.set(false);this.fetchbooks()">Delete</button>
-    </li>
-    } @empty {
-    <p>Loading books...</p>
+    @if (!this.isAdding()) {
+    <button class="button-add" (click)="isAdding.set(true)">Create Book</button>
+    <p></p>
     }
-</ul>
-<br />
-  @if (this.isEditing()) {
-        <input type="text" placeholder="New book name..." #newBookName value="{{this.bookToEdit().name}}" />
-        <button (click)="updateBook(this.bookToEdit().name, newBookName.value);newBookName.value=''">Update</button>
+
+    @if (this.isAdding()) {
+    <input class="book-add" type="text" placeholder="Add book name..." #bookToAdd />
+    <button class="button-add" (click)="addBook(bookToAdd.value);bookToAdd.value='';this.isAdding.set(false);this.fetchbooks()">Save</button>
+    }
+
+    <div>
+        @for (book of books(); track book.id) {
+        <div class="book-item">
+            <span class="book">{{ book.id }} - {{ book.name }}
+            </span>
+            <span class="book-buttons">
+                <button class="button-edit" (click)="editBook(book.id)">Edit</button>
+                <button class="button-delete" (click)="deleteBook(book.id);this.isEditing.set(false);this.fetchbooks()">Delete</button>
+            </span>
+        </div>
+        } @empty {
+        <p>Loading books...</p>
         }
-@else {
-<input type="text" placeholder="Search books..." #bookInput />
-<button (click)="searchBooks(bookInput.value);bookInput.value=''">Search partial</button>
-<button (click)="searchExactBook(bookInput.value);bookInput.value=''">Search Exact</button>
-}
+    </div>
+    <br />
+    @if (this.isEditing()) {
+    <input type="text" placeholder="New book name..." #newBookName value="{{this.bookToEdit().name}}" />
+    <button (click)="updateBook(this.bookToEdit().id, newBookName.value);newBookName.value=''">Update</button>
+    }
+    @else {
+    <div class="">
+        <br />
+        <input class="book-search" type="text" placeholder="Search books..." #bookInput />
+        <button class="button-partial"(click)="searchBooks(bookInput.value);bookInput.value=''">Search partial</button>
+        <button class="button-add" (click)="searchExactBook(bookInput.value);bookInput.value=''">Search Exact</button>
+    </div>
+    }
+
+</div>
