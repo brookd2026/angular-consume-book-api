@@ -11,7 +11,7 @@
 
 .book {
     float: left;
-    width: 185px;
+    width: 200px;
     text-align: left;
     border: 1px solid #ccc;
     border-radius: 7px;
@@ -29,7 +29,6 @@
 
 .button-edit {
       padding:15px;
-      width: 50px;
       margin-right: 5px;
       background: #007bff;
       border:none;
@@ -81,4 +80,4 @@
     padding: 10px;
     margin-right: 10px;
     margin-bottom: 15px;
-}
+} 
