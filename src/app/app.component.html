@@ -3,7 +3,7 @@
     <h1>Book List</h1>
 
     @if (!this.isAdding()) {
-    <button class="button-add" (click)="isAdding.set(true)">Create Book</button>
+    <button class="button-create" (click)="isAdding.set(true)">Create Book</button>
     <p></p>
     }
 
@@ -28,15 +28,17 @@
     </div>
     <br />
     @if (this.isEditing()) {
-    <input type="text" placeholder="New book name..." #newBookName value="{{this.bookToEdit().name}}" />
-    <button (click)="updateBook(this.bookToEdit().id, newBookName.value);newBookName.value=''">Update</button>
-    }
+    <input class="book-add" type="text" placeholder="New book name..." #newBookName value="{{this.bookToEdit().name}}" />
+    <button class="button-add" (click)="updateBook(this.bookToEdit().id, newBookName.value);newBookName.value=''">Update</button>
+    <button class="ms-1 button-cancel" (click)="fetchbooks()">Cancel</button>
+}
     @else {
     <div class="">
         <br />
         <input class="book-search" type="text" placeholder="Search books..." #bookInput />
         <button class="button-partial"(click)="searchBooks(bookInput.value);bookInput.value=''">Search partial</button>
         <button class="button-add" (click)="searchExactBook(bookInput.value);bookInput.value=''">Search Exact</button>
+        <button class="ms-1 button-refresh" (click)="fetchbooks();">Refresh</button>
     </div>
     }
 
