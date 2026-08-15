@@ -37,7 +37,7 @@ export class BookManagerComponent {
         next: (updatedBook) => {
           // Mutate the local resource value instantly without reloading the entire page
           this.booksResource.value.update(books => 
-            books ? books.map(b => b.id === updatedBook.id ? updatedBook : b) : []
+            books ? books.map(b => b.id === current.id ? current : b) : []
           );
           this.resetForm();
         },
@@ -49,6 +49,7 @@ export class BookManagerComponent {
         next: (newBook) => {
           // Push to local signal array immediately
           this.booksResource.value.update(books => books ? [...books, newBook] : [newBook]);
+          this.booksResource.reload();
           this.resetForm();
         },
         complete: () => this.isSubmitting.set(false)

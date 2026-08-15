@@ -4,7 +4,7 @@ import { BookManagerComponent } from "./components/book-manager.component";
 
 @Component({
   selector: 'app-root',
-  imports: [AppComponent, BookManagerComponent],
+  imports: [AppComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

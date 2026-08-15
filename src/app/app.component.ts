@@ -83,12 +83,12 @@ export class AppComponent implements OnInit {
     updateBook(id: number, name: string) {
         const putUrl = `${this.rootUrl}/UpdateBookTitle/${id}`
         var book = { id: id, name: name };
-        this.http.put<any>(putUrl, book)
+        this.http.put(putUrl, book, { responseType: 'text'})
             //.pipe(debounceTime(500)) // Debounce to avoid rapid calls
             .subscribe({
                 next: (data) => {
                     console.log('Book updated:', data);
-                    //this.fetchbooks(); // Refresh the list after updating
+                    this.fetchbooks(); // Refresh the list after updating
                 },
                 error: (err) => console.error('API Error:', err)
             })
@@ -104,13 +104,15 @@ export class AppComponent implements OnInit {
 
     deleteBook(id: string) {
         const deleteUrl = `${this.rootUrl}/DeleteBookFromList/${id}`;
-        this.http.delete<any>(deleteUrl)
+        this.http.delete(deleteUrl, { responseType: 'text' })
             .pipe(debounceTime(500))
             .subscribe({
                 next: (data) => {
                     console.log('Book deleted:', data);
+                    this.isDeleting.set(false)
+                    this.fetchbooks();
                 },
-                error: (err) => console.error('API Error:', err)
+                error: (err) => { console.error('API Error:', err); }
             })
     }
 

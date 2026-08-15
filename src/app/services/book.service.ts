@@ -19,12 +19,12 @@ export class BookService {
   }
 
   // UPDATE
-  update(id: number, book: Book): Observable<Book> {
-    return this.http.put<Book>(`${this.apiUrl}/UpdateBookTitle/${id}`, book);
+  update(id: number, book: Book): Observable<string> {
+    return this.http.put(`${this.apiUrl}/UpdateBookTitle/${id}`, book, {responseType: 'text'});
   }
 
   // DELETE
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/DeleteBookFromList/${id}`);
+  delete(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/DeleteBookFromList/${id}`, {responseType: 'text'});
   }
 }
