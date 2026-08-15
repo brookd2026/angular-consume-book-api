@@ -15,8 +15,10 @@ export class AppComponent implements OnInit {
     public books = signal<any[]>([]);
     rootUrl = 'https://localhost:7275/books';
     isEditing = signal(false);
+    isDeleting = signal(false);
     isAdding = signal(false);
     bookToEdit = signal<any>(null);
+    bookToDelete = signal<any>(null);
     private refreshTrigger = new BehaviorSubject<void>(undefined);
 
     ngOnInit() {
@@ -82,20 +84,28 @@ export class AppComponent implements OnInit {
         const putUrl = `${this.rootUrl}/UpdateBookTitle/${id}`
         var book = { id: id, name: name };
         this.http.put<any>(putUrl, book)
-            .pipe(debounceTime(300)) // Debounce to avoid rapid calls
+            //.pipe(debounceTime(500)) // Debounce to avoid rapid calls
             .subscribe({
                 next: (data) => {
-                    console.log('Book added:', data);
-                    this.isEditing.set(false);
-                    this.fetchbooks(); // Refresh the list after updating
+                    console.log('Book updated:', data);
+                    //this.fetchbooks(); // Refresh the list after updating
                 },
                 error: (err) => console.error('API Error:', err)
             })
     }
 
+    considerDeleteBook(id: string) {
+        this.isDeleting.set(!this.isDeleting());
+        // Find the book to edit and set it in the signal
+        const book = this.books().find((b) => b.id === id);
+        this.bookToDelete.set(book);
+    }
+    
+
     deleteBook(id: string) {
         const deleteUrl = `${this.rootUrl}/DeleteBookFromList/${id}`;
         this.http.delete<any>(deleteUrl)
+            .pipe(debounceTime(500))
             .subscribe({
                 next: (data) => {
                     console.log('Book deleted:', data);
