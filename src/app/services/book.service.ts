@@ -22,8 +22,8 @@ export class BookService {
   }
 
   // CREATE
-  create(book: Book): Observable<Book> {
-    return this.http.post<Book>(`${this.apiUrl}/AddBookToList`, book);
+  create(book: Book): Observable<string> {
+    return this.http.post(`${this.apiUrl}/AddBookToList`, book, { responseType: 'text'});
   }
 
   // UPDATE
