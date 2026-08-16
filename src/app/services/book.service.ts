@@ -13,6 +13,14 @@ export class BookService {
     return this.http.get<Book[]>(this.apiUrl);
   }
 
+  searchBooks(query: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/FilterSearch/${query}`);
+  }
+  
+  searchExactBook(query: string): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/ExactNameSearch/${query}`);
+  }
+
   // CREATE
   create(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.apiUrl}/AddBookToList`, book);
@@ -20,11 +28,11 @@ export class BookService {
 
   // UPDATE
   update(id: number, book: Book): Observable<string> {
-    return this.http.put(`${this.apiUrl}/UpdateBookTitle/${id}`, book, {responseType: 'text'});
+    return this.http.put(`${this.apiUrl}/UpdateBookTitle/${id}`, book, { responseType: 'text' });
   }
 
   // DELETE
   delete(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/DeleteBookFromList/${id}`, {responseType: 'text'});
+    return this.http.delete(`${this.apiUrl}/DeleteBookFromList/${id}`, { responseType: 'text' });
   }
 }

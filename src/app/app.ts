@@ -1,10 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { AppComponent } from './app.component';
-import { BookManagerComponent } from "./components/book-manager.component";
+import { BookListComponent } from "./components/book-list.component/book-list.component";
 
 @Component({
   selector: 'app-root',
-  imports: [AppComponent],
+  imports: [BookListComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
