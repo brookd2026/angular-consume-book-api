@@ -10,7 +10,11 @@ export class BookService {
 
   // READ (All products)
   getAll(): Observable<Book[]> {
-    return this.http.get<Book[]>(this.apiUrl);
+    return this.http.get<Book[]>(`${this.apiUrl}/GetAll`);
+  }
+
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/GetBookById/${id}`);
   }
 
   searchBooks(query: string): Observable<Book[]> {
@@ -23,7 +27,7 @@ export class BookService {
 
   // CREATE
   create(book: Book): Observable<string> {
-    return this.http.post(`${this.apiUrl}/AddBookToList`, book, { responseType: 'text'});
+    return this.http.post(`${this.apiUrl}/AddNewBook`, book, { responseType: 'text'});
   }
 
   // UPDATE
@@ -33,6 +37,6 @@ export class BookService {
 
   // DELETE
   delete(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/DeleteBookFromList/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.apiUrl}/DeleteBook/${id}`, { responseType: 'text' });
   }
 }
